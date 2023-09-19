@@ -17,11 +17,20 @@ public class Student {
     private String lastname;
     private LocalDate birthdate;
 
+    public Student(){
+
+    }
+
+
     public Student(long id, String firstname, String lastname, LocalDate birthdate) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.birthdate = birthdate;
+    }
+
+    public String getFullname(){
+        return firstname + " " + lastname;
     }
 
     public long getId() {
@@ -43,4 +52,6 @@ public class Student {
     public void setId(long id) {
         this.id = id;
     }
+
+
 }

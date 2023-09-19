@@ -2,12 +2,13 @@ package com.generation.HelloRESTWorld.model.repositories.abstractions;
 
 import com.generation.HelloRESTWorld.model.Student;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface StudentRepository {
-        Iterable<Student> getAllStudents();
+        List<Student> findAll();
 
-        Optional<Student> findStudentById(long id);
+        Optional<Student> findById(long id);
 
-        Student create(Student s);
+        Student save(Student s);
 }

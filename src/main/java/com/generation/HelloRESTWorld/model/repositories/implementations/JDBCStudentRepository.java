@@ -2,6 +2,7 @@ package com.generation.HelloRESTWorld.model.repositories.implementations;
 
 import com.generation.HelloRESTWorld.model.Student;
 import com.generation.HelloRESTWorld.model.repositories.abstractions.StudentRepository;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import javax.swing.text.html.Option;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Profile("jdbc")
 public class JDBCStudentRepository implements StudentRepository {
     public final static String JDBC_URL = "jdbc:mysql://:3306/db_example";
     public final static String JDBC_USER = "root";
@@ -68,8 +70,8 @@ public class JDBCStudentRepository implements StudentRepository {
 
     }*/
 
-    public Iterable<Student> getAllStudents() {
-        Collection<Student> students = new ArrayList<Student>();
+    public List<Student> findAll() {
+        List<Student> students = new ArrayList<Student>();
 
         try (Connection con = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
              Statement st = con.createStatement();
@@ -94,7 +96,7 @@ public class JDBCStudentRepository implements StudentRepository {
     }
 
     @Override
-    public Optional<Student> findStudentById(long id) {
+    public Optional<Student> findById(long id) {
 
         try (Connection con = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
              PreparedStatement st = con.prepareStatement(FIND_STUDENT_BY_ID);
@@ -116,7 +118,7 @@ public class JDBCStudentRepository implements StudentRepository {
     }
 
     @Override
-    public Student create(Student s) {
+    public Student save(Student s) {
         try (Connection con = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
              PreparedStatement st = con.prepareStatement(CREATE_STUDENT, Statement.RETURN_GENERATED_KEYS);
         ) {

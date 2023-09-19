@@ -17,19 +17,19 @@ public class StudentServiceImpl implements StudentService {
     }
     @Override
     public Iterable<Student> getAllStudents() {
-        var students = repository.getAllStudents();
+        var students = repository.findAll();
         return students;
     }
 
     @Override
     public Optional<Student> findStudentById(long id) {
-        var student = repository.findStudentById(id);
+        var student = repository.findById(id);
         return student;
     }
 
     @Override
     public Student create(Student s) {
-        var student = repository.create(s);
+        var student = repository.save(s);
         return student;
     }
 }
