@@ -2,6 +2,7 @@ package com.generation.HelloRESTWorld.model.repositories.implementations;
 
 import com.generation.HelloRESTWorld.model.Student;
 import com.generation.HelloRESTWorld.model.repositories.abstractions.StudentRepository;
+import org.springframework.stereotype.Repository;
 
 import javax.swing.text.html.Option;
 import java.sql.*;
@@ -11,13 +12,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class JDBCStudentRepository implements StudentRepository {
     public final static String JDBC_URL = "jdbc:mysql://:3306/db_example";
     public final static String JDBC_USER = "root";
     public final static String JDBC_PASSWORD = "Super@2003";
-    public final static String ALL_STUDENTS = "select id,firstname,lastname,birthdate from student";
-    public final static String FIND_STUDENT_BY_ID = "select firstname,lastname,birthdate from student where id =?";
-    public final static String CREATE_STUDENT = "insert into student (firstname,lastname,birthdate) values (?,?,?)";
+    public final static String ALL_STUDENTS = "select id,firstname,lastname,birthdate from students";
+    public final static String FIND_STUDENT_BY_ID = "select firstname,lastname,birthdate from students where id =?";
+    public final static String CREATE_STUDENT = "insert into students (firstname,lastname,birthdate) values (?,?,?)";
    /* @Override
     public Iterable<Student> getAllStudents() {
         Connection con = null;

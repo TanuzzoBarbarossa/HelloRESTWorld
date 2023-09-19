@@ -1,10 +1,19 @@
 package com.generation.HelloRESTWorld.model;
 
-import java.time.LocalDate;
 
+
+import jakarta.persistence.*;
+
+import java.time.LocalDate;
+@Entity
+@Table(name = "students")
 public class Student {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(name = "firstname")
     private String firstname;
+    @Column(name = "lastname")
     private String lastname;
     private LocalDate birthdate;
 

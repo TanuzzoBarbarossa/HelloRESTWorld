@@ -20,15 +20,8 @@ public class StudentController {
     }
     @GetMapping(value = "/student") //getMapping dice a spring quando invocare questo metodo (di questo http)
     public Iterable <Student> getAllStudents(){
-    Student s1 = new Student(1, "Mario", "Rossi", LocalDate.of(2003,6,25));
-
-    Student s2 = new Student(2, "Gigi", "Neri", LocalDate.of(2004, 5, 3));
-
-        Collection<Student> students = new ArrayList<>();
-
-        students.add(s1);
-        students.add(s2);
-
+        //var (tipo di dato dedotto) in java vuol dire che lasci che il programma decide il suo variabile (ritorna iterable<Student>)
+        var students = studentService.getAllStudents();
         return students;
     }
 }
