@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.swing.text.html.Option;
@@ -31,20 +32,31 @@ public class StudentController {
         List<StudentDto> studentDtos = new ArrayList<>();
         var students = studentService.getAllStudents();
         for(Student student : students){
-                StudentDto sDto = new StudentDto(student.getId(), student.getFirstname() + "" + student.getLastname());
+                StudentDto sDto = new StudentDto(student.getId(), student.getFullname());
                 studentDtos.add(sDto);
         }
         return new ResponseEntity<>(studentDtos, HttpStatus.OK);
     }
-@GetMapping(value = "/student/{id}")
-
-    public ResponseEntity<StudentDto> findById(@PathVariable long id){
+    @GetMapping(value = "/student/{id}")
+    public ResponseEntity<StudentDto> findById(@PathVariable long id){ //response entit
+        //Student s = studentService.findStudentById(id);
+        //s.getFirstname();
         Optional<Student> studentOptional = studentService.findStudentById(id);
+        //Student s = studentOptional.get();
         if(studentOptional.isEmpty()){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
         Student s = studentOptional.get();
         StudentDto sDto = new StudentDto(s.getId(), s.getFullname());
         return new ResponseEntity<>(sDto, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/student")
+    public ResponseEntity<StudentDto> save(StudentDto studentDto){
+        Student s = studentDto.toStudent();
+        studentService.create(s);
+        StudentDto result = new StudentDto(s);
+
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 }

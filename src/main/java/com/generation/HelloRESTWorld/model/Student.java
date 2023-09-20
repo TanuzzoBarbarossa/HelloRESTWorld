@@ -17,6 +17,7 @@ public class Student {
     private String lastname;
     private LocalDate birthdate;
 
+    //costruttore di default per jpa
     public Student(){
 
     }

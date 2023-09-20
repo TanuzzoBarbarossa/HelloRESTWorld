@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 @Profile("orm") //repository che devi chiamare da iniettare quando attivo questo profilo
 public class JPAStudentRepository implements StudentRepository {
-    @PersistenceContext //inietta entityManager
+    @PersistenceContext //creazione di un EntityManager e inietta nella variabile entityManager
     private EntityManager entityManager;
     @Override
     public List<Student> findAll() {
