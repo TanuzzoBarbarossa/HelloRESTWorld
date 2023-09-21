@@ -11,4 +11,6 @@ public interface StudentRepository {
         Optional<Student> findById(long id);
 
         Student save(Student s);
+
+        void deleteById(Long id);
 }

@@ -8,15 +8,15 @@ public class StudentDto {
     private long id;
     private String fullname;
 
-    public StudentDto(){
+    public StudentDto() {
     }
 
-    public StudentDto(long id, String fullname){
+    public StudentDto(long id, String fullname) {
         this.id = id;
         this.fullname = fullname;
     }
 
-    public StudentDto(Student s){
+    public StudentDto(Student s) {
         this.id = s.getId();
         this.fullname = s.getFullname();
     }
@@ -27,14 +27,17 @@ public class StudentDto {
     }
 
 
-
     public String getFullname() {
         return fullname;
     }
 
-    public Student toStudent(){
+    public Student toStudent() {
         String[] tokens = fullname.split(" ");
-        Student s = new Student(0,tokens[0], tokens[1], LocalDate.of(1000, 1, 1));
+        Student s = new Student(id, tokens[0], tokens[1], LocalDate.of(1000, 1, 1));
         return s;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

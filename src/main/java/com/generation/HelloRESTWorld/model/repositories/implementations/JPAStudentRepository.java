@@ -39,4 +39,11 @@ public class JPAStudentRepository implements StudentRepository {
     public Student save(Student s) {
         return entityManager.merge(s);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        entityManager.remove(entityManager.getReference(Student.class, id));
+    }
+
+
 }

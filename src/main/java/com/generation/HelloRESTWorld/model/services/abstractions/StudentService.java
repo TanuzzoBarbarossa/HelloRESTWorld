@@ -10,4 +10,8 @@ public interface StudentService {
         Optional<Student> findStudentById(long id);
 
         Student create(Student s);
+
+        void delete(long id);
+
+        void update(Student s);
 }

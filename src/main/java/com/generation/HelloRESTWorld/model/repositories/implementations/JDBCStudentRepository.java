@@ -22,53 +22,9 @@ public class JDBCStudentRepository implements StudentRepository {
     public final static String ALL_STUDENTS = "select id,firstname,lastname,birthdate from students";
     public final static String FIND_STUDENT_BY_ID = "select firstname,lastname,birthdate from students where id =?";
     public final static String CREATE_STUDENT = "insert into students (firstname,lastname,birthdate) values (?,?,?)";
-   /* @Override
-    public Iterable<Student> getAllStudents() {
-        Connection con = null;
-        Statement st = null;
-        ResultSet rs = null;
-        Collection<Student> students = new ArrayList<Student>();
-        try {
-            con = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD);
-            st = con.createStatement();
-            rs = st.executeQuery(ALL_STUDENTS);
-            while(rs.next()){
-                long id = rs.getLong("id");
-                String firstname = rs.getString("firstname");
-                String lastname = rs.getString("lastname");
-                LocalDate birthdate = rs.getDate("birthdate").toLocalDate();
+    public final static String DELETE_STUDENT = "delete from students where id =?";
 
-                Student student = new Student(id,firstname,lastname,birthdate);
-
-                students.add(student);
-            }
-            return students;
-        }catch (SQLException e){
-            throw new RuntimeException(e);
-        }finally {
-            try{
-                if(rs != null){
-                    rs.close();
-                }
-            }catch (SQLException e){
-
-            }try{
-                if(st != null){
-                    st.close();
-                }
-            }catch (SQLException e){
-
-            }
-            try{
-                if(con != null){
-                    con.close();
-                }
-            }catch (SQLException e){
-
-            }
-        }
-
-    }*/
+    public final static String UPDATE_STUDENT = "update students set firstname =?, lastname =? where id =?";
 
     public List<Student> findAll() {
         List<Student> students = new ArrayList<Student>();
@@ -119,12 +75,48 @@ public class JDBCStudentRepository implements StudentRepository {
 
     @Override
     public Student save(Student s) {
+        if(s.getId() == 0){
+            return create(s);
+        }
         try (Connection con = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-             PreparedStatement st = con.prepareStatement(CREATE_STUDENT, Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement st = con.prepareStatement(UPDATE_STUDENT);
         ) {
             st.setString(1, s.getFirstname());
             st.setString(2, s.getLastname());
-            st.setDate(3, Date.valueOf(s.getBirthdate()));
+            st.executeUpdate();
+
+            return s;
+            }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        }
+
+        private Student create(Student s){
+            try (Connection con = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+                 PreparedStatement st = con.prepareStatement(CREATE_STUDENT, Statement.RETURN_GENERATED_KEYS);
+            ) {
+                st.setString(1, s.getFirstname());
+                st.setString(2, s.getLastname());
+                st.setDate(3, Date.valueOf(s.getBirthdate()));
+                st.executeUpdate();
+                try(ResultSet rs = st.getGeneratedKeys()){
+                    if(rs.next()){
+                        long id = rs.getLong(1);
+                        s.setId(id);
+                    }
+                }
+                return s;
+            }catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+    @Override
+    public void deleteById(Long id) {
+       /* try (Connection con = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement st = con.prepareStatement(DELETE_STUDENT);
+        ) {
+            st.setLong(1, id);
             st.executeUpdate();
             try(ResultSet rs = st.getGeneratedKeys()){
                 if(rs.next()){
@@ -133,8 +125,10 @@ public class JDBCStudentRepository implements StudentRepository {
                 }
             }
             return s;
-            }catch (SQLException e) {
+        }catch (SQLException e) {
             throw new RuntimeException(e);
-        }
-        }
+        }*/
+    }
+
+
 }

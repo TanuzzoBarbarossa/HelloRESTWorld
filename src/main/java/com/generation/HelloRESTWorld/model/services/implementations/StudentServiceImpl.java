@@ -32,4 +32,14 @@ public class StudentServiceImpl implements StudentService {
         var student = repository.save(s);
         return student;
     }
+
+    @Override
+    public void delete(long id) {
+        repository.deleteById(id);
+    }
+
+
+    public void update(Student s) {
+        repository.save(s);
+    }
 }
